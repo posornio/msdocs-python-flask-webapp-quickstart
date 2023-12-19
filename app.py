@@ -95,17 +95,9 @@ def predict(y):
     predictProba2 = [item[0] for item in predictProba]
     return predictProba2
 
-@app.route('/')
-def index():
-   print('Request for index page received')
-   return render_template('index.html')
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-@app.route('/hello', methods=['POST'])
+@app.route('/', methods=['POST'])
 def hello():
     name = request.args.get('name')
 
@@ -116,8 +108,6 @@ def hello():
     html_content = ntResponse.text
 
     y = intoToVec(html_content)
-    print(y)
-    print("\n")
     #y = preprocessor.transform(y)
     return jsonify({'name': name, 'Bot': predict(y)})
 
