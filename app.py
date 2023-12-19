@@ -1,8 +1,8 @@
 import os
 import re
 from flask import Flask
-import pandas as pd
-import numpy as np
+import pandas
+import numpy 
 from sklearn.preprocessing import RobustScaler,OneHotEncoder,LabelEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import CountVectorizer
@@ -87,7 +87,7 @@ def intoToVec(html_content):
     contains_pinned_class = bool(soup.select_one('.pinned'))
 
     data = {'created_at': joindate, 'pinned_tweet_id' : contains_pinned_class, 'default_profile_image':  default_profile_image, 'followers_count': followers_count, 'following_count': following_count, 'tweet_count': tweet_count, 'verfied': is_verified, 'description_length' : length_description ,'ratio_tweet_count' :ratio_tweet_count, 'popularity': popularity, 'word_bot':word_bot, 'hashtag':hashtag}
-    return pd.DataFrame([data])
+    return pandas.DataFrame([data])
 
 def predict(y):
     model = load("api/GBC_model_account_simple.joblib")
