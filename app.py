@@ -90,7 +90,7 @@ def intoToVec(html_content):
     return pandas.DataFrame([data])
 
 def predict(y):
-    model = load("api/GBC_model_account_simple.joblib")
+    model = load("GBC_model_account_simple.joblib")
     predictProba = model.predict_proba(y)
     predictProba2 = [item[0] for item in predictProba]
     return predictProba2
