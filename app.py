@@ -1,3 +1,4 @@
+
 import os
 import re
 from flask import Flask
@@ -31,6 +32,18 @@ preprocessor = ColumnTransformer(transformers=[
         ('Class Values', OneHotEncoder(handle_unknown='ignore'), categorical_features),
         #('Text Values', FunctionTransformer(word2vec_transform, kw_args={'model': model}), text_features),
     ])
+
+
+def compter_nombres(chaine):
+    pattern = r'\d+'  # Expression régulière pour matcher un ou plusieurs chiffres
+    resultats = re.findall(pattern, chaine)
+    return len(resultats)
+
+
+def detecterBots(bio):
+    bot = re.findall('bot', bio.lower())
+    ai = re.findall(r'\b(AI)\b', bio)
+    return len(bot)+len(ai)
 
 
 def intoToVec(html_content):
@@ -86,7 +99,11 @@ def intoToVec(html_content):
     length_description = len(profile_bio)
     contains_pinned_class = bool(soup.select_one('.pinned'))
 
-    data = {'created_at': joindate, 'pinned_tweet_id' : contains_pinned_class, 'default_profile_image':  default_profile_image, 'followers_count': followers_count, 'following_count': following_count, 'tweet_count': tweet_count, 'verfied': is_verified, 'description_length' : length_description ,'ratio_tweet_count' :ratio_tweet_count, 'popularity': popularity, 'word_bot':word_bot, 'hashtag':hashtag}
+
+    nombre_dans_nom = compter_nombres(username)
+    word_bot_nom= detecterBots(username)
+
+    data = {'created_at': joindate, 'pinned_tweet_id' : contains_pinned_class, 'default_profile_image':  default_profile_image, 'followers_count': followers_count, 'following_count': following_count, 'tweet_count': tweet_count, 'verfied': is_verified, 'description_length' : length_description ,'name_length' : len(username) ,'ratio_tweet_count' :ratio_tweet_count, 'popularity': popularity, 'word_bot':word_bot, 'hashtag':hashtag,'nombre_dans_nom':nombre_dans_nom, 'word_bot_nom':word_bot_nom}
     return pandas.DataFrame([data])
 
 def predict(y):
@@ -115,3 +132,6 @@ def hello():
 
 if __name__ == '__main__':
    app.run()
+
+
+
