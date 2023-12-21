@@ -3,35 +3,16 @@ import os
 import re
 from flask import Flask
 import pandas
-import numpy 
-from sklearn.preprocessing import RobustScaler,OneHotEncoder,LabelEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.pipeline import Pipeline
 import requests
-import ast
 import numpy as np
 from bs4 import BeautifulSoup
-from joblib import dump, load
+from joblib import load
 
 
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for,jsonify)
 
 app = Flask(__name__)
-
-numeric_feature = ["created_at", "followers_count", "following_count", "tweet_count", "listed_count", "description_length", 'ratio_tweet_count', 'popularity']
-categorical_features = ["pinned_tweet_id", "default_profile_image", "verfied"]
-preprocessor = ColumnTransformer(transformers=[
-        ('Numerical Values', RobustScaler(), numeric_feature),
-        ('Class Values', OneHotEncoder(handle_unknown='ignore'), categorical_features),
-        #('Text Values', FunctionTransformer(word2vec_transform, kw_args={'model': model}), text_features),
-    ])
-preprocessor = ColumnTransformer(transformers=[
-        ('Numerical Values', RobustScaler(), numeric_feature),
-        ('Class Values', OneHotEncoder(handle_unknown='ignore'), categorical_features),
-        #('Text Values', FunctionTransformer(word2vec_transform, kw_args={'model': model}), text_features),
-    ])
 
 
 def compter_nombres(chaine):
