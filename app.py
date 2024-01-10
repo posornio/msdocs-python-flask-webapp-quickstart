@@ -93,7 +93,7 @@ def predict(y):
 
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
 def hello():
     name = request.args.get('name')
 
