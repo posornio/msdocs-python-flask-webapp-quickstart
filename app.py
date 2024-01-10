@@ -1,5 +1,3 @@
-
-import os
 import re
 from flask import Flask
 import pandas
@@ -9,10 +7,10 @@ from bs4 import BeautifulSoup
 from joblib import load
 
 
-from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for,jsonify)
+from flask import (Flask, request,jsonify)
 
 app = Flask(__name__)
+model = load("GBC_model_account.joblib")
 
 
 def compter_nombres(chaine):
@@ -85,10 +83,10 @@ def intoToVec(html_content):
     word_bot_nom= detecterBots(username)
 
     data = {'created_at': joindate, 'pinned_tweet_id' : contains_pinned_class, 'default_profile_image':  default_profile_image, 'followers_count': followers_count, 'following_count': following_count, 'tweet_count': tweet_count, 'verfied': is_verified, 'description_length' : length_description ,'name_length' : len(username) ,'ratio_tweet_count' :ratio_tweet_count, 'popularity': popularity, 'word_bot':word_bot, 'hashtag':hashtag,'nombre_dans_nom':nombre_dans_nom, 'word_bot_nom':word_bot_nom}
+    print(data)
     return pandas.DataFrame([data])
 
 def predict(y):
-    model = load("GBC_model_account.joblib")
     predictProba = model.predict_proba(y)
     predictProba2 = [item[0] for item in predictProba]
     return predictProba2
@@ -106,6 +104,9 @@ def hello():
     html_content = ntResponse.text
 
     y = intoToVec(html_content)
+
+# Open the file in write mode and write the HTML content
+   
     #y = preprocessor.transform(y)
     return jsonify({'name': name, 'Bot': predict(y)})
 

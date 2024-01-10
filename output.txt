@@ -1,0 +1,4 @@
+created_at  pinned_tweet_id  default_profile_image  ...  hashtag  nombre_dans_nom  word_bot_nom
+0        2013            False                  False  ...        0                0             0
+
+[1 rows x 15 columns]
